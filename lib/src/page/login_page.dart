@@ -7,12 +7,101 @@ class LoginPage extends StatelessWidget{
   return Scaffold(
         body: Stack(
           children: [
-            _crearFondo(context)
+            _crearFondo(context),
+            _loginForm(context),
           ],
         ),
   );
   }
 
+  Widget _loginForm(BuildContext context) {
+       final size = MediaQuery.of(context).size;
+       return SingleChildScrollView(
+         child:Column(
+           children: [
+             Container(height: 230.0),
+
+             Container(
+               padding: EdgeInsets.symmetric(vertical: 30.0),
+               width: size.width * 0.85,
+               decoration: BoxDecoration(
+                   color: Colors.white,
+                 borderRadius: BorderRadius.circular(5.0),
+                 boxShadow: <BoxShadow>[
+                   BoxShadow(
+                     color: Colors.black26,
+                     blurRadius: 3.0,
+                     spreadRadius: 3.0,
+                     offset: Offset(0.0,5)
+                   )
+                 ]
+               ),
+               child: Column(
+                 children: [
+                   Text('Ingreso', style: TextStyle(fontSize: 20.0)),
+                   SizedBox(height: 30.0),
+                   _crearEmail(),
+                   SizedBox(height: 30.0),
+                   _crearPassword(),
+                   SizedBox(height: 30.0),
+                   _crearBoton()
+                 ],
+               ),
+             ),
+             SizedBox(height: 20.0),
+             Text('Olvido la contraseña?'),
+             SizedBox(height: 20.0),
+           ]
+         )
+       );
+  }
+  Widget _crearEmail() {
+    return Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.0 ),
+        child: TextField(
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+              icon: Icon(Icons.alternate_email, color:Colors.deepPurple),
+              hintText:'example@correo.com',
+            labelText: 'Correlo Electronico'
+          ),
+        ),
+    );
+  }
+
+  Widget _crearPassword() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.0 ),
+      child: TextField(
+        obscureText: true,
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+            icon: Icon(Icons.lock_clock_outlined, color:Colors.deepPurple),
+            labelText: 'Contraseña'
+        ),
+      ),
+    );
+  }
+  Widget _crearBoton() {
+    return ElevatedButton(
+
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 80.0),
+          child: Text('Ingresar'),
+        ),
+         style:  ElevatedButton.styleFrom(
+           elevation: 0.0,
+           onPrimary: Colors.white,
+           primary: Colors.deepPurple,
+           minimumSize: Size(88, 36),
+           shape:  RoundedRectangleBorder(
+             borderRadius: BorderRadius.circular(5.0),
+           ),
+         ),
+
+        onPressed: (){},
+    );
+  }
  Widget _crearFondo(BuildContext context) {
       final size = MediaQuery.of(context).size;
        final fondoMorado = Container(
@@ -52,7 +141,7 @@ class LoginPage extends StatelessWidget{
              child: Column(
 
                children: [
-                 Icon(Icons.person_pin_circle, color: Colors.white, size: 100.0,),
+                 Icon(Icons.person_pin_circle, color: Colors.white, size: 80.0,),
                  SizedBox(height: 10.0, width: double.infinity,),
                  Text('Oscary Ramirez', style: TextStyle(
                      fontSize: 25.0,
@@ -65,4 +154,5 @@ class LoginPage extends StatelessWidget{
          ],
        );
   }
+
 }
