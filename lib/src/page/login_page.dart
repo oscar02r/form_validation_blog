@@ -48,7 +48,7 @@ class LoginPage extends StatelessWidget{
                    SizedBox(height: 30.0),
                    _crearPassword(bloc),
                    SizedBox(height: 30.0),
-                   _crearBoton()
+                   _crearBoton(bloc)
                  ],
                ),
              ),
@@ -64,6 +64,7 @@ class LoginPage extends StatelessWidget{
     return  StreamBuilder(
       stream: bloc.emailStream,
       builder: (BuildContext context, AsyncSnapshot<String> snashop){
+
        return Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0 ),
           child: TextField(
@@ -108,25 +109,31 @@ class LoginPage extends StatelessWidget{
 
 
   }
-  Widget _crearBoton() {
-    return ElevatedButton(
+  Widget _crearBoton( LoginBloc bloc) {
+    return StreamBuilder(
+       stream: bloc.formValidStream ,
+        builder: (context, AsyncSnapshot snapshot) {
+          return ElevatedButton(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 80.0),
+              child: Text('Ingresar'),
+            ),
+            style:  ElevatedButton.styleFrom(
+              elevation: 0.0,
+              onPrimary: Colors.white,
+              primary: Colors.deepPurple,
+              minimumSize: Size(88, 36),
+              shape:  RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+            ),
 
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 80.0),
-          child: Text('Ingresar'),
-        ),
-         style:  ElevatedButton.styleFrom(
-           elevation: 0.0,
-           onPrimary: Colors.white,
-           primary: Colors.deepPurple,
-           minimumSize: Size(88, 36),
-           shape:  RoundedRectangleBorder(
-             borderRadius: BorderRadius.circular(5.0),
-           ),
-         ),
-
-        onPressed: (){},
+            onPressed: snapshot.hasData ?  (){}: null,
+          );
+        }
     );
+
+
   }
  Widget _crearFondo(BuildContext context) {
       final size = MediaQuery.of(context).size;
