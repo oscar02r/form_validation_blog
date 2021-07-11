@@ -17,6 +17,8 @@ class LoginBloc with Validators {
   Function(String) get changeEmail => _emailController.add;
   Function(String) get changePassword => _passwordController.add;
 
+  String? get email => _emailController.valueOrNull;
+  String? get password => _passwordController.valueOrNull;
 
   dispose(){
     _passwordController.close();

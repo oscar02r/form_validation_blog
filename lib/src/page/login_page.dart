@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_blog/src/bloc/provider.dart';
+import 'package:form_blog/src/page/home_page.dart';
 
 class LoginPage extends StatelessWidget{
   static final String routeName = 'login' ;
@@ -128,12 +129,13 @@ class LoginPage extends StatelessWidget{
               ),
             ),
 
-            onPressed: snapshot.hasData ?  (){}: null,
+            onPressed: snapshot.hasData ?  ()=> _login(context,bloc): null,
           );
         }
     );
-
-
+  }
+  void _login(BuildContext context , LoginBloc  bloc){
+      Navigator.of(context).pushReplacementNamed(HomePage.routeName);
   }
  Widget _crearFondo(BuildContext context) {
       final size = MediaQuery.of(context).size;
