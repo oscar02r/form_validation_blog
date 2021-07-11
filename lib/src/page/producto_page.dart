@@ -94,6 +94,7 @@ Widget  _crearPrecio() {
  }
 
   void _submit() {
-    formKey.currentState?.validate();
+    if(!formKey.currentState!.validate()) return;
+    print('Todo Okay');
   }
 }
