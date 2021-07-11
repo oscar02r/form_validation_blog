@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget{
           ProductoPage.routeName : (BuildContext context) => ProductoPage(),
         },
         theme: ThemeData(
-          primaryColor: Colors.deepPurple
+          primaryColor: Colors.deepPurple,
+
         )
       )
     );
