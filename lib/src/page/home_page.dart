@@ -46,7 +46,9 @@ class HomePage extends StatelessWidget{
   Widget _itemList(ProductoModel producto, context){
     return Dismissible(
       key: UniqueKey(),
-      onDismissed: (diction){},
+      onDismissed: (direction){
+        productoProvider.borrarProducto('${producto.id}');
+      },
       background: Container(color: Colors.red),
       child: ListTile(
         title:Text('${producto.titulo} - ${producto.valor}'),
