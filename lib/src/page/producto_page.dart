@@ -13,18 +13,27 @@ class ProductoPage extends StatefulWidget {
 class _ProductoPageState extends State<ProductoPage> {
 
   final formKey = GlobalKey<FormState>();
+  final scaffolKey = GlobalKey<ScaffoldState>();
   final productoProvider = new ProductoProvider();
   ProductoModel producto = new ProductoModel();
+  bool _guardando = false;
 
   @override
   Widget build(BuildContext context) {
-    final ProductoModel protData = ModalRoute.of(context)!.settings.arguments
-    as ProductoModel;
+
+   // if(ModalRoute.of(context)!.settings.arguments != null){
+      final ProductoModel protData = ModalRoute.of(context)!.settings.arguments
+      as ProductoModel ;
+   // }
+
+
 
     if(protData != null){
+      print('Listo');
       producto = protData;
     }
     return Scaffold(
+      key: scaffolKey,
       appBar: AppBar(
         title: Text('Producto'),
         actions: [
@@ -95,7 +104,7 @@ class _ProductoPageState extends State<ProductoPage> {
               borderRadius: BorderRadius.circular(20.0))),
       icon: Icon(Icons.save),
       label: Text('Guardar'),
-      onPressed: _submit,
+      onPressed: _guardando ? null : ()=> _submit(context),
     );
   }
 
@@ -109,14 +118,27 @@ class _ProductoPageState extends State<ProductoPage> {
             }));
   }
 
-  void _submit() {
+  void _submit(BuildContext context) {
+
+    setState(() { _guardando = true;});
     if (!formKey.currentState!.validate()) return;
     formKey.currentState?.save();
     if(producto.id == null)
     {
       productoProvider.crearProducto(producto);
+      _mostraSnackbar('Producto guardado!', context);
     }else{
       productoProvider.editarProducto(producto);
+      setState(() { _guardando = false;});
+      _mostraSnackbar('Producto Actualizado!', context);
     }
+    Navigator.pop(context);
+  }
+  void _mostraSnackbar(String mensaje, context){
+      final snackBar = SnackBar(
+          content: Text('$mensaje'),
+        duration: Duration(seconds: 3),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
