@@ -1,7 +1,13 @@
+
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:form_blog/src/models/producto_model.dart';
 import 'package:form_blog/src/providers/producto_providers.dart';
 import 'package:form_blog/src/utils/utils.dart' as utils;
+import 'package:image_picker/image_picker.dart';
 
 class ProductoPage extends StatefulWidget {
   static final routeName = 'producto';
@@ -13,17 +19,17 @@ class ProductoPage extends StatefulWidget {
 class _ProductoPageState extends State<ProductoPage> {
 
   final formKey = GlobalKey<FormState>();
-  final scaffolKey = GlobalKey<ScaffoldState>();
+  final scaffolKey = GlobalKey <ScaffoldState>();
   final productoProvider = new ProductoProvider();
   ProductoModel producto = new ProductoModel();
   bool _guardando = false;
+  var _photo ;
 
   @override
   Widget build(BuildContext context) {
-
    // if(ModalRoute.of(context)!.settings.arguments != null){
-      final ProductoModel protData = ModalRoute.of(context)!.settings.arguments
-      as ProductoModel ;
+      final   protData = ModalRoute.of(context)?.settings.arguments
+      as ProductoModel? ;
    // }
 
 
@@ -38,21 +44,25 @@ class _ProductoPageState extends State<ProductoPage> {
         title: Text('Producto'),
         actions: [
           IconButton(
-              icon: Icon(Icons.photo_size_select_actual), onPressed: () {}),
-          IconButton(icon: Icon(Icons.camera_alt), onPressed: () {})
+              icon: Icon(Icons.photo_size_select_actual), onPressed: () => _procesarImagen(ImageSource.gallery)),
+          IconButton(icon: Icon(Icons.camera_alt), onPressed:() => _procesarImagen(ImageSource.camera)),
         ],
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10.0),
-        child: Form(
-          key: formKey,
-          child: Column(
-            children: [
-              _crearNombre(context),
-              _crearPrecio(),
-              _crearDisponible(context),
-              _crearBoton(context)
-            ],
+        
+        padding: EdgeInsets.all(10.0),
+        child: SingleChildScrollView(
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                _mostratFoto(context),
+                _crearNombre(context),
+                _crearPrecio(),
+                _crearDisponible(context),
+                _crearBoton(context)
+              ],
+            ),
           ),
         ),
       ),
@@ -140,5 +150,36 @@ class _ProductoPageState extends State<ProductoPage> {
         duration: Duration(seconds: 3),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  Widget _mostratFoto(BuildContext context){
+    final size = MediaQuery.of(context).size;
+    if(producto.fotoUrl != null){
+       return Container();
+    }else{
+      return _photo?.path != null ? Image.file(File(_photo?.path),
+          height: size.height * 0.4,
+        width: size.width * 0.90,
+        fit: BoxFit.fitWidth,
+      ):
+
+        Image(
+          image: AssetImage( _photo?.path ?? 'assets/no-image.png'),
+        height: 300.0,
+        fit: BoxFit.cover,
+      );
+    }
+  }
+
+  void _procesarImagen(ImageSource source) async{
+    final picker = ImagePicker();
+    _photo = await picker.getImage(
+        source: source
+    );
+
+    if(_photo !=null){
+
+    }
+    setState(() {});
   }
 }
