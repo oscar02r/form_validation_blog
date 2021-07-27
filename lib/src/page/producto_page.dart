@@ -128,11 +128,16 @@ class _ProductoPageState extends State<ProductoPage> {
             }));
   }
 
-  void _submit(BuildContext context) {
+  void _submit(BuildContext context) async {
 
-    setState(() { _guardando = true;});
+
     if (!formKey.currentState!.validate()) return;
     formKey.currentState?.save();
+    setState(() { _guardando = true;});
+
+    if(_photo != null){
+      producto.fotoUrl = await productoProvider.uploadImage(_photo);
+    }
     if(producto.id == null)
     {
       productoProvider.crearProducto(producto);
