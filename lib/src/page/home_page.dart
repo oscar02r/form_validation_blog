@@ -50,12 +50,27 @@ class HomePage extends StatelessWidget{
         productoProvider.borrarProducto('${producto.id}');
       },
       background: Container(color: Colors.red),
-      child: ListTile(
-        title:Text('${producto.titulo} - ${producto.valor}'),
-        subtitle: Text('${producto.id}'),
-        onTap: ()=> Navigator.pushNamed(context, ProductoPage.routeName, arguments: producto),
-      ),
+      child: Column(
+        children: [
+          (producto.fotoUrl == null )
+              ?Image(
+               image: AssetImage('assets/no-image.png'))
+              :FadeInImage(
+                height: 300.0,
+              width:  double.infinity,
+              fit:  BoxFit.cover,
+              placeholder: AssetImage('assets/214 jar-loading.gif'),
+              image: NetworkImage(producto.fotoUrl.toString())
+          ),
+          ListTile(
+            title:Text('${producto.titulo} - ${producto.valor}'),
+            subtitle: Text('${producto.id}'),
+            onTap: ()=> Navigator.pushNamed(context, ProductoPage.routeName, arguments: producto),
+          ),
+        ],
+      )
     );
+
   }
   Widget _crearBoton( BuildContext context) {
     return FloatingActionButton(

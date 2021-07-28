@@ -159,8 +159,15 @@ class _ProductoPageState extends State<ProductoPage> {
 
   Widget _mostratFoto(BuildContext context){
     final size = MediaQuery.of(context).size;
+
     if(producto.fotoUrl != null){
-       return Container();
+       return FadeInImage(
+           height: 300.0,
+           width: double.infinity,
+           fit: BoxFit.cover,
+           placeholder: AssetImage('assets/214 jar-loading.gif'),
+           image: NetworkImage(producto.fotoUrl.toString())
+       );
     }else{
       return _photo?.path != null ? Image.file(File(_photo?.path),
           height: size.height * 0.4,
@@ -183,7 +190,7 @@ class _ProductoPageState extends State<ProductoPage> {
     );
 
     if(_photo !=null){
-
+       producto.fotoUrl = null;
     }
     setState(() {});
   }
