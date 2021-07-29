@@ -54,7 +54,10 @@ class LoginPage extends StatelessWidget{
                ),
              ),
              SizedBox(height: 20.0),
-             Text('Olvido la contraseña?'),
+             TextButton(
+                 child: Text('Crear nueva cuenta'),
+                 onPressed: () => Navigator.pushReplacementNamed(context, 'registro'),
+             ),
              SizedBox(height: 20.0),
            ]
          )
