@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:form_blog/src/bloc/provider.dart';
 import 'package:form_blog/src/page/home_page.dart';
+import 'package:form_blog/src/providers/usuario_provider.dart';
 
 class LoginPage extends StatelessWidget{
   static final String routeName = 'login' ;
+  final usuarioProvider = new UsuarioProvider();
+
   @override
   Widget build(BuildContext context) {
   return Scaffold(
@@ -137,8 +140,10 @@ class LoginPage extends StatelessWidget{
         }
     );
   }
+
   void _login(BuildContext context , LoginBloc  bloc){
-      Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+       usuarioProvider.login(bloc.email.toString(), bloc.password.toString());
+      //Navigator.of(context).pushReplacementNamed(HomePage.routeName);
   }
  Widget _crearFondo(BuildContext context) {
       final size = MediaQuery.of(context).size;
