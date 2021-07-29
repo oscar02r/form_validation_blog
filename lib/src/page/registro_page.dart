@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:form_blog/src/bloc/provider.dart';
 import 'package:form_blog/src/page/home_page.dart';
 import 'package:form_blog/src/page/login_page.dart';
+import 'package:form_blog/src/providers/usuario_provider.dart';
 
 class RegistroPage extends StatelessWidget{
 
   static final String routeName = 'registro' ;
+  final usuarioProvider = new UsuarioProvider();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,14 +136,16 @@ class RegistroPage extends StatelessWidget{
               ),
             ),
 
-            onPressed: snapshot.hasData ?  ()=> _login(context,bloc): null,
+            onPressed: snapshot.hasData ?  ()=> _register(context,bloc): null,
           );
         }
     );
   }
-  void _login(BuildContext context , LoginBloc  bloc){
-    Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+  void _register(BuildContext context , LoginBloc  bloc){
+    usuarioProvider.nuevoUsuario(bloc.email.toString(), bloc.password.toString());
+   // Navigator.of(context).pushReplacementNamed(HomePage.routeName);
   }
+
   Widget _crearFondo(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final fondoMorado = Container(
