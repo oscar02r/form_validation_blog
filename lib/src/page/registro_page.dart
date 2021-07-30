@@ -3,6 +3,7 @@ import 'package:form_blog/src/bloc/provider.dart';
 import 'package:form_blog/src/page/home_page.dart';
 import 'package:form_blog/src/page/login_page.dart';
 import 'package:form_blog/src/providers/usuario_provider.dart';
+import 'package:form_blog/src/utils/utils.dart' as utils;
 
 class RegistroPage extends StatelessWidget{
 
@@ -141,9 +142,15 @@ class RegistroPage extends StatelessWidget{
         }
     );
   }
-  void _register(BuildContext context , LoginBloc  bloc){
-    usuarioProvider.nuevoUsuario(bloc.email.toString(), bloc.password.toString());
-   // Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+
+  void _register(BuildContext context , LoginBloc  bloc) async {
+
+    Map info = await  usuarioProvider.nuevoUsuario(bloc.email.toString(), bloc.password.toString());
+    if(info['ok']){
+      Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+    }else{
+      utils.mostrarAlerta(context, 'Este correco ya existe.');
+    }
   }
 
   Widget _crearFondo(BuildContext context) {

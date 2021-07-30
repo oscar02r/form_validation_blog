@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_blog/src/bloc/provider.dart';
 import 'package:form_blog/src/page/home_page.dart';
 import 'package:form_blog/src/providers/usuario_provider.dart';
+import 'package:form_blog/src/utils/utils.dart' as utils;
 
 class LoginPage extends StatelessWidget{
   static final String routeName = 'login' ;
@@ -141,9 +142,14 @@ class LoginPage extends StatelessWidget{
     );
   }
 
-  void _login(BuildContext context , LoginBloc  bloc){
-       usuarioProvider.login(bloc.email.toString(), bloc.password.toString());
-      //Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+  void _login(BuildContext context , LoginBloc  bloc) async {
+    Map info = await   usuarioProvider.login(bloc.email.toString(), bloc.password.toString());
+    if(info['ok']){
+      Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+    }else{
+      utils.mostrarAlerta(context, 'Login o password incorrecto.');
+    }
+
   }
  Widget _crearFondo(BuildContext context) {
       final size = MediaQuery.of(context).size;
