@@ -44,7 +44,7 @@ class ProductosBloc{
 
 
   dispose(){
-    _productosController?.close();
-    _cargarndoController?.close();
+    _productosController.close();
+    _cargarndoController.close();
   }
 }

@@ -2,52 +2,52 @@ import 'package:flutter/material.dart';
 import 'package:form_blog/src/bloc/provider.dart';
 import 'package:form_blog/src/models/producto_model.dart';
 import 'package:form_blog/src/page/producto_page.dart';
-import 'package:form_blog/src/providers/producto_providers.dart';
 
 class HomePage extends StatelessWidget{
   static final String routeName = 'home' ;
-  final productoProvider = ProductoProvider();
+
 
   @override
   Widget build(BuildContext context) {
 
-    final bloc = Provider.of(context);
+    final productosBloc = Provider.productosBloc(context);
+    productosBloc.cargarProductos();
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Home page')
       ),
-      body: _crearListado(),
+      body: _crearListado(productosBloc),
       floatingActionButton:  _crearBoton(context),
     );
   }
 
- Widget _crearListado(){
-     return FutureBuilder(
-         future: productoProvider.cargarProductos() ,
-         builder: (context, AsyncSnapshot<List<ProductoModel>> snapshot){
+ Widget _crearListado( ProductosBloc productosBloc){
+
+     return StreamBuilder(
+         stream: productosBloc.productosStream ,
+         builder: (BuildContext context, AsyncSnapshot<List<ProductoModel>> snapshot) {
            final productos = snapshot.data;
 
-          if(snapshot.hasData) {
-            return ListView.builder(
+           if (snapshot.hasData) {
+             return ListView.builder(
                  itemCount: productos?.length,
-                itemBuilder: (context, i) =>_itemList(productos![i],context)
+                 itemBuilder: (context, i) => _itemList(productos![i], context, productosBloc)
 
-            );
-          }else{
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
+             );
+           } else {
+             return Center(
+               child: CircularProgressIndicator(),
+             );
+           }
          }
-     );
+           );
   }
-  Widget _itemList(ProductoModel producto, context){
+  Widget _itemList(ProductoModel producto, context, ProductosBloc productosBloc){
     return Dismissible(
       key: UniqueKey(),
       onDismissed: (direction){
-        productoProvider.borrarProducto('${producto.id}');
+        productosBloc.borrarProducto('${producto.id}');
       },
       background: Container(color: Colors.red),
       child: Column(

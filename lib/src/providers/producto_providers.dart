@@ -12,6 +12,7 @@ import 'package:form_blog/src/models/producto_model.dart';
 class ProductoProvider {
   final String _url = 'https://flutter-varios-11539-default-rtdb.firebaseio.com';
   final prefs = PreferenciasUsuario();
+
   Future<bool> crearProducto(ProductoModel producto) async {
     final url = Uri.parse('$_url/productos.json?auth=${prefs.token}');
 
@@ -33,6 +34,11 @@ class ProductoProvider {
     final resp = await http.get(url);
     final List<ProductoModel> productos = [];
     final Map<String, dynamic> decodeData = json.decode(resp.body);
+
+    if(decodeData == null) return [];
+
+    if(decodeData['error'] != null) return [];
+
     decodeData.forEach((id, prod) {
         ProductoModel prodTemp = ProductoModel.fromJson(prod);
         prodTemp.id = id;
